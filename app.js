@@ -32,8 +32,10 @@ app.get("/notes", function(req, res) {
 ///api/notes
 app.post("/api/notes",function(req,res){
         var base = require("./db.json");
-        
-        base.push(req.body);
+        var index = base.length;
+        var add = req.body;
+        add.id = index;
+        base.push(add);
         console.log(base);
         
         fs.writeFileSync(__dirname + '/db.json', JSON.stringify(base) ,function (error, data) {

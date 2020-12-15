@@ -124,6 +124,8 @@
         var newNote = {
           title: $noteTitle.val(),
           text: $noteText.val(),
+          id:"",
+          active:true,
         };
           saveNote(newNote).then(() => {
           console.log("so far");
@@ -133,6 +135,10 @@
         });
       };
       
+      function focus(obj){
+        alert(obj.id)
+      }
+
       var saveNote = (note) => {
           return $.ajax({
             url: "/api/notes",
@@ -149,8 +155,11 @@
           // Returns jquery object for li with given text and delete button
           // unless withDeleteButton argument is provided as false
           var create$li = (text, withDeleteButton = true) => {
-            var $li = $("<li class='list-group-item'>");
+            var $li = $("<li class='list-group-item' id=''>");
             var $span = $("<span>").text(text);
+              $li.on("click",function(){
+                focus(this);
+              });
             $li.append($span);
 
             if (withDeleteButton) {
@@ -165,9 +174,12 @@
           if (notes.length === 0) {
             noteListItems.push(create$li("No saved Notes", false));
           }
-          console.log(notes);
+          
           notes.forEach((note) => {
             var $li = create$li(note.title).data(note);
+           
+            $li[0].id = note.id;
+           
             noteListItems.push($li);
           });
 
