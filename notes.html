@@ -18,9 +18,10 @@
           padding: 0;
         }
 
-        .save-note {
+        /*
+        save-note {
           display: none;
-        }
+        } */
 
         .icons i {
           margin-left: 15px;
@@ -111,7 +112,7 @@
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script >
       const $saveNoteBtn = $(".save-note");
       const $noteTitle = $(".note-title");
@@ -119,52 +120,41 @@
       const $newNoteBtn = $(".new-note");
       const $noteList = $(".list-container .list-group");
      
-      const handleNoteSave = function () {
-        const newNote = {
+      var handleNoteSave = function () {
+        var newNote = {
           title: $noteTitle.val(),
           text: $noteText.val(),
         };
-
-        
-
-        saveNote(newNote).then(() => {
-          //getAndRenderNotes();
+          saveNote(newNote).then(() => {
+          console.log("so far");
+          $noteList.empty();
+          getAndRenderNotes();
           //renderActiveNote();
         });
       };
-      const saveNote = (note) => {
+      
+      var saveNote = (note) => {
           return $.ajax({
             url: "/api/notes",
             data: note,
             method: "POST",
           });
         };
-  
-      $saveNoteBtn.on("click", handleNoteSave);
-
-      const getNotes = () => {
-
-        return $.ajax({
-          url: "/api/notes",
-          method: "GET",
-        });
-
-      };
-  
-      const renderNoteList = (notes) => {
+      // Render's the list of note titles
+      var renderNoteList = (notes) => {
           $noteList.empty();
 
-          const noteListItems = [];
+          var noteListItems = [];
 
           // Returns jquery object for li with given text and delete button
           // unless withDeleteButton argument is provided as false
-            const create$li = (text, withDeleteButton = true) => {
-            const $li = $("<li class='list-group-item'>");
-            const $span = $("<span>").text(text);
+          var create$li = (text, withDeleteButton = true) => {
+            var $li = $("<li class='list-group-item'>");
+            var $span = $("<span>").text(text);
             $li.append($span);
 
             if (withDeleteButton) {
-              const $delBtn = $(
+              var $delBtn = $(
                 "<i class='fas fa-trash-alt float-right text-danger delete-note'>"
               );
               $li.append($delBtn);
@@ -175,20 +165,38 @@
           if (notes.length === 0) {
             noteListItems.push(create$li("No saved Notes", false));
           }
-
+          console.log(notes);
           notes.forEach((note) => {
-            const $li = create$li(note.title).data(note);
+            var $li = create$li(note.title).data(note);
             noteListItems.push($li);
           });
 
-          $noteList.append(noteListItems);
-        };
-      
-        var test = getNotes().then(function(response){
+      $noteList.append(noteListItems);
+      };  
+
+      $saveNoteBtn.on("click", handleNoteSave);
+
+      var getNotes = () => {
+
+        return $.ajax({
+          url: "/api/notes",
+          method: "GET",
+        });
+
+      };
+
+     var getAndRenderNotes = () => {
+
+        getNotes().then(function(response){
+          console.log(response);
+          
           renderNoteList(response);
-        }        
-        );
-        
+
+        });
+      };
+     
+      
+    getAndRenderNotes();
         
         
   

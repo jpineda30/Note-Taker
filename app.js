@@ -43,14 +43,15 @@ app.post("/api/notes",function(req,res){
             console.log("Saved!")
         });
         
-    res.write("OK");     
+    res.json(base);     
 });
 
 //get
 app.get("/api/notes", function(req, res) {
+
   var base = require("./db.json");
-  let parsed = JSON.stringify(base);
-  res.send(parsed);
+  
+  res.send(base);
 
 });
 
