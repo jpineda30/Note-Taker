@@ -51,13 +51,6 @@ app.post("/api/notes",function(req,res){
         let load2 = JSON.parse(load);
         load2.push(add);
         
-
-        
-        
-       
-        
-
-
         let count =0;
 
         var saveBase = load2.map(function(element){
@@ -75,7 +68,7 @@ app.post("/api/notes",function(req,res){
         
         console.log("POST",saveBase);
         
-    res.send("PH");     
+    res.send(saveBase);     
 });
 
 //get all notes
