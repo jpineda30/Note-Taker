@@ -10,21 +10,28 @@ const $noteList = $(".list-container .list-group");
 // functions
 // =============================================================     
 var handleNoteSave = function () {
-  const newNote = {
-    title: $noteTitle.val(),
-    text: $noteText.val(),
-    id:"",
-    active:true,
-  };
-    saveNote(newNote).then((res) => {
 
-      $noteList.empty();
-      renderNoteList(res);
+  if($noteTitle.val() != ""){
+    const newNote = {
+      title: $noteTitle.val(),
+      text: $noteText.val(),
+      id:"",
+      active:true,
+    };
+      saveNote(newNote).then((res) => {
+  
+        $noteList.empty();
+        renderNoteList(res);
+  
+      //$noteList.empty();
+      //getAndRenderNotes();
+      //renderActiveNote();
+    });
+  }
+  else
+  {alert("Empty title");}
 
-    //$noteList.empty();
-    //getAndRenderNotes();
-    //renderActiveNote();
-  });
+  
 };
 
 //click on a note
@@ -166,7 +173,9 @@ $noteText.val("");
 
 // events
 // ===========================================================
-
+$(".new-note").on("click",function(){
+  clearNote();
+});
 $saveNoteBtn.on("click", function(){
   
   handleNoteSave();
