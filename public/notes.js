@@ -174,11 +174,24 @@ function clearNote(){
 // ===========================================================
 $(".new-note").on("click",function(){
   clearNote();
+  $saveNoteBtn.show();
 });
 $saveNoteBtn.on("click", function(){
   
   handleNoteSave();
 });
+
+//button save logic
+$noteTitle.on("keyup", handleRenderSaveBtn);
+$noteText.on("keyup", handleRenderSaveBtn);
+
+var handleRenderSaveBtn = function () {
+  if (!$noteTitle.val().trim() || !$noteText.val().trim()) {
+    $saveNoteBtn.hide();
+  } else {
+    $saveNoteBtn.show();
+  }
+};
 
 getAndRenderNotes();
   
