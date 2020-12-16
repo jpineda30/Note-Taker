@@ -181,9 +181,15 @@ $saveNoteBtn.on("click", function(){
   handleNoteSave();
 });
 
+$noteTitle.on("keyup", function(){
+  handleRenderSaveBtn();
+});
+$noteText.on("keyup", function(){
+  handleRenderSaveBtn();
+});
+
 //button save logic
-$noteTitle.on("keyup", handleRenderSaveBtn);
-$noteText.on("keyup", handleRenderSaveBtn);
+
 
 var handleRenderSaveBtn = function () {
   if (!$noteTitle.val().trim() || !$noteText.val().trim()) {
