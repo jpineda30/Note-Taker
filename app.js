@@ -90,6 +90,6 @@ app.post("/api/delete",function(req,res){
       }
       console.log("Saved!")
   });
-  
-res.json(base);     
+
+  res.json(newBase);     
 });

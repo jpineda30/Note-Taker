@@ -137,21 +137,25 @@
       
       function focus(obj){
         let id = obj.id;
-        getNotes().then(function(response){
+        if(id != "")
+        {
+          getNotes().then(function(response){
 
-          var active = response.filter(function(save){
-            return save.id == id;
-          })
-          
-          $saveNoteBtn.hide();
+              var active = response.filter(function(save){
+                return save.id == id;
+              })
 
-        
-          $noteTitle.attr("readonly", true);
-          $noteText.attr("readonly", true);
-          $noteTitle.val(active[0].title);
-          $noteText.val(active[0].text);
-          console.log(active);
-        });
+              $saveNoteBtn.hide();
+
+
+              $noteTitle.attr("readonly", true);
+              $noteText.attr("readonly", true);
+              $noteTitle.val(active[0].title);
+              $noteText.val(active[0].text);
+              console.log(active);
+              });
+
+        }
             
         
       }
@@ -163,9 +167,13 @@
           "id":id
         }
         remove(currentObj).then(function(res){
-          console.log(res);
+          
           $noteList.empty();
-          getAndRenderNotes();
+          renderNoteList(res);
+          //getAndRenderNotes();
+          renderNoteList(res);
+
+          
         });
 
           
