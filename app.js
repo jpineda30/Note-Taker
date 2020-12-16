@@ -20,7 +20,8 @@ app.use(express.static(__dirname + '/public'));
 // Routes
 // =============================================================
 
-// Basic route that sends the user first to the AJAX Page
+// Basic routes
+// =============================================================
 app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "index.html"));
 });
@@ -29,7 +30,10 @@ app.get("/notes", function(req, res) {
   res.sendFile(path.join(__dirname, "notes.html"));
 });
 
-///api/notes
+// Routes
+// =============================================================
+
+//save note return new array
 app.post("/api/notes",function(req,res){
         var base = require("./db.json");
         var index = base.length;
@@ -48,7 +52,7 @@ app.post("/api/notes",function(req,res){
     res.json(base);     
 });
 
-//get
+//get all notes
 app.get("/api/notes", function(req, res) {
 
   var base = require("./db.json");
@@ -59,16 +63,8 @@ app.get("/api/notes", function(req, res) {
 });
 
 
-
-
-// Starts the server to begin listening
-// =============================================================
-app.listen(PORT, function() {
-  console.log("App listening on PORT " + PORT);
-});
-
-
-app.post("/api/delete",function(req,res){
+//delete notes
+app.delete("/api/delete",function(req,res){
   var base = require("./db.json");
   var add = req.body;
   var newBase = base.filter(function(element){
@@ -93,3 +89,12 @@ app.post("/api/delete",function(req,res){
 
   res.json(newBase);     
 });
+
+
+// Starts the server to begin listening
+// =============================================================
+app.listen(PORT, function() {
+  console.log("App listening on PORT " + PORT);
+});
+
+

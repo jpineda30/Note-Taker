@@ -1,9 +1,14 @@
+      
+// Asign elements
+// =============================================================
       const $saveNoteBtn = $(".save-note");
       const $noteTitle = $(".note-title");
       const $noteText = $(".note-textarea");
       const $newNoteBtn = $(".new-note");
       const $noteList = $(".list-container .list-group");
-     
+
+// functions
+// =============================================================     
       var handleNoteSave = function () {
         var newNote = {
           title: $noteTitle.val(),
@@ -19,6 +24,7 @@
         });
       };
       
+      //click on a note
       function focus(obj){
         let id = obj.id;
         if(id != "")
@@ -44,6 +50,7 @@
         
       }
 
+      //click on delete
       function removeS(obj){
 
         let id = obj.id;
@@ -69,14 +76,14 @@
             data: note,
             method: "POST",
           });
-        };
+      };
       
 
     var remove = (note) => {
           return $.ajax({
             url: "/api/delete",
             data: note,
-            method: "POST",
+            method: "DELETE",
           });
         };
  
@@ -127,8 +134,6 @@
       clearNote();
       };  
 
-      $saveNoteBtn.on("click", handleNoteSave);
-
       var getNotes = () => {
 
         return $.ajax({
@@ -154,5 +159,11 @@
       $noteTitle.val("");
       $noteText.val("");
     }  
+
+// events
+// =============================================================
+
+$saveNoteBtn.on("click", handleNoteSave);
+
     getAndRenderNotes();
         
