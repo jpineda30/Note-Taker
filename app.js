@@ -52,14 +52,44 @@ app.post("/api/notes",function(req,res){
 app.get("/api/notes", function(req, res) {
 
   var base = require("./db.json");
-  
+  console.log("Get data");
+  console.log(base);
   res.send(base);
 
 });
+
+
 
 
 // Starts the server to begin listening
 // =============================================================
 app.listen(PORT, function() {
   console.log("App listening on PORT " + PORT);
+});
+
+
+app.post("/api/delete",function(req,res){
+  var base = require("./db.json");
+  var add = req.body;
+  var newBase = base.filter(function(element){
+      return element.id != add.id;
+  });
+  
+  console.log(newBase);
+  let count =0;
+  var saveBase = newBase.map(function(element){
+    count++;
+    element.id = count;
+    return element;
+  });
+  console.log(saveBase);
+  
+  fs.writeFileSync(__dirname + '/db.json', JSON.stringify(newBase) ,function (error, data) {
+      if (error) {
+        return error
+      }
+      console.log("Saved!")
+  });
+  
+res.json(base);     
 });

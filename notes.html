@@ -128,7 +128,7 @@
           active:true,
         };
           saveNote(newNote).then(() => {
-          console.log("so far");
+          
           $noteList.empty();
           getAndRenderNotes();
           //renderActiveNote();
@@ -136,9 +136,43 @@
       };
       
       function focus(obj){
-        alert(obj.id)
+        let id = obj.id;
+        getNotes().then(function(response){
+
+          var active = response.filter(function(save){
+            return save.id == id;
+          })
+          
+          $saveNoteBtn.hide();
+
+        
+          $noteTitle.attr("readonly", true);
+          $noteText.attr("readonly", true);
+          $noteTitle.val(active[0].title);
+          $noteText.val(active[0].text);
+          console.log(active);
+        });
+            
+        
       }
 
+      function removeS(obj){
+
+        let id = obj.id;
+        let currentObj = {
+          "id":id
+        }
+        remove(currentObj).then(function(res){
+          console.log(res);
+          $noteList.empty();
+          getAndRenderNotes();
+        });
+
+          
+      }
+    
+  
+      
       var saveNote = (note) => {
           return $.ajax({
             url: "/api/notes",
@@ -146,6 +180,16 @@
             method: "POST",
           });
         };
+      
+
+    var remove = (note) => {
+          return $.ajax({
+            url: "/api/delete",
+            data: note,
+            method: "POST",
+          });
+        };
+ 
       // Render's the list of note titles
       var renderNoteList = (notes) => {
           $noteList.empty();
@@ -157,8 +201,13 @@
           var create$li = (text, withDeleteButton = true) => {
             var $li = $("<li class='list-group-item' id=''>");
             var $span = $("<span>").text(text);
-              $li.on("click",function(){
-                focus(this);
+              $li.on("click",function(event){
+                if(event.target.nodeName == "I"){
+                    removeS(this);
+                }else{
+                  focus(this);
+                }
+                
               });
             $li.append($span);
 
@@ -166,6 +215,7 @@
               var $delBtn = $(
                 "<i class='fas fa-trash-alt float-right text-danger delete-note'>"
               );
+              
               $li.append($delBtn);
             }
             return $li;
@@ -200,7 +250,7 @@
      var getAndRenderNotes = () => {
 
         getNotes().then(function(response){
-          console.log(response);
+          
           
           renderNoteList(response);
 
