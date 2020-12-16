@@ -36,7 +36,7 @@ app.get("/notes", function(req, res) {
 //save note return new array
 app.post("/api/notes",function(req,res){
 
-        let base = require("./db.json");
+        let base = require("./public/db.json");
         let index = base.length;
         let add = req.body;
         add.id = index;
@@ -69,7 +69,7 @@ app.post("/api/notes",function(req,res){
 //get all notes
 app.get("/api/notes", function(req, res) {
 
-  var refresh = require("./db.json");
+  var refresh = require("./public/db.json");
  
   res.send(refresh);
 
@@ -78,7 +78,7 @@ app.get("/api/notes", function(req, res) {
 
 //delete notes
 app.delete("/api/delete",function(req,res){
-  var base = require("./db.json");
+  var base = require("./public/db.json");
   var add = req.body;
   var newBase = base.filter(function(element){
       return element.id != add.id;
@@ -93,7 +93,7 @@ app.delete("/api/delete",function(req,res){
   });
  
   const myWriteFunction = async (filename) => {
-    await fs.writeFile(__dirname + '/db.json', JSON.stringify(filename),function (error, data) {
+    await fs.writeFile(__dirname + '/public/db.json', JSON.stringify(filename),function (error, data) {
       if (error) {
         return error
       }
