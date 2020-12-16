@@ -35,30 +35,43 @@ app.get("/notes", function(req, res) {
 
 //save note return new array
 app.post("/api/notes",function(req,res){
-        var base = require("./db.json");
-        var index = base.length;
-        var add = req.body;
+
+        let base = require("./db.json");
+        let index = base.length;
+        let add = req.body;
         add.id = index;
         base.push(add);
-        console.log(base);
         
-        fs.writeFileSync(__dirname + '/db.json', JSON.stringify(base) ,function (error, data) {
+        const myWriteFunction = async (filename) => {
+          await fs.writeFile(__dirname + '/db.json', JSON.stringify(filename),function (error, data) {
             if (error) {
               return error
             }
             console.log("Saved!")
+        })
+        }
+
+
+        let count =0;
+
+        var saveBase = base.map(function(element){
+          count++;
+          element.id = count;
+          return element;
         });
+      
+        myWriteFunction(saveBase);
+        console.log("POST",saveBase);
         
-    res.json(base);     
+    res.json(saveBase);     
 });
 
 //get all notes
 app.get("/api/notes", function(req, res) {
 
-  var base = require("./db.json");
-  console.log("Get data");
-  console.log(base);
-  res.send(base);
+  var refresh = require("./db.json");
+ 
+  res.send(refresh);
 
 });
 
@@ -71,30 +84,38 @@ app.delete("/api/delete",function(req,res){
       return element.id != add.id;
   });
   
-  console.log(newBase);
+  
   let count =0;
   var saveBase = newBase.map(function(element){
     count++;
     element.id = count;
     return element;
   });
-  console.log(saveBase);
-  
-  fs.writeFileSync(__dirname + '/db.json', JSON.stringify(newBase) ,function (error, data) {
+ 
+  const myWriteFunction = async (filename) => {
+    await fs.writeFile(__dirname + '/db.json', JSON.stringify(filename),function (error, data) {
       if (error) {
         return error
       }
       console.log("Saved!")
-  });
+  })
+  }
+
+  myWriteFunction(saveBase);
+
+ /* fs.writeFileSync(__dirname + '/db.json', JSON.stringify(newBase) ,function (error, data) {
+      if (error) {
+        return error
+      }
+      console.log("Saved!")
+  });*/
 
   res.json(newBase);     
-});
+})
 
 
 // Starts the server to begin listening
-// =============================================================
+// ============================================================
 app.listen(PORT, function() {
   console.log("App listening on PORT " + PORT);
 });
-
-
