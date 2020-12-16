@@ -18,12 +18,10 @@ var handleNoteSave = function () {
       id:"",
       active:true,
     };
-      saveNote(newNote).then((res) => {
+      saveNote(newNote).then(() => {
   
-        $noteList.empty();
-        renderNoteList(res);
-  
-      //$noteList.empty();
+          
+        getAndRenderNotes();
       //getAndRenderNotes();
       //renderActiveNote();
     });
@@ -41,7 +39,8 @@ function focus(obj){
   {
     getNotes().then(function(response){
 
-        var active = response.filter(function(save){
+
+        var active = JSON.parse(response).filter(function(save){
           return save.id == id;
         })
 
@@ -158,17 +157,17 @@ var getAndRenderNotes = () => {
 
   getNotes().then(function(response){
     
-    
-    renderNoteList(response);
+    var Parsed = JSON.parse(response);
+    renderNoteList(Parsed);
 
   });
 };
 
 function clearNote(){
-$noteTitle.attr("readonly", false);
-$noteText.attr("readonly", false);
-$noteTitle.val("");
-$noteText.val("");
+  $noteTitle.attr("readonly", false);
+  $noteText.attr("readonly", false);
+  $noteTitle.val("");
+  $noteText.val("");
 }  
 
 // events

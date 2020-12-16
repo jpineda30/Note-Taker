@@ -36,41 +36,59 @@ app.get("/notes", function(req, res) {
 //save note return new array
 app.post("/api/notes",function(req,res){
 
-        let base = require("./public/db.json");
-        let index = base.length;
+              
+        var load = fs.readFileSync("./public/db.json","utf-8",function (error, data) {
+          if (error) {
+            return error
+          }
+          console.log("Saved!")
+        });
+
+        
+        let index = load.length;
         let add = req.body;
         add.id = index;
-        base.push(add);
+        let load2 = JSON.parse(load);
+        load2.push(add);
         
-        const myWriteFunction = async (filename) => {
-          await fs.writeFile(__dirname + '/db.json', JSON.stringify(filename),function (error, data) {
-            if (error) {
-              return error
-            }
-            console.log("Saved!")
-        })
-        }
+
+        
+        
+       
+        
 
 
         let count =0;
 
-        var saveBase = base.map(function(element){
+        var saveBase = load2.map(function(element){
           count++;
           element.id = count;
           return element;
         });
       
-        myWriteFunction(saveBase);
+        fs.writeFileSync('./public/db.json', JSON.stringify(saveBase),function (error, data) {
+          if (error) {
+            return error
+          }
+          console.log("Saved!")
+      })
+        
         console.log("POST",saveBase);
         
-    res.json(saveBase);     
+    res.send("PH");     
 });
 
 //get all notes
 app.get("/api/notes", function(req, res) {
 
-  var refresh = require("./public/db.json");
+  var refresh = fs.readFileSync("./public/db.json","utf-8",function (error, data) {
+    if (error) {
+      return error
+    }
+    console.log("Saved!")
+  });
  
+  
   res.send(refresh);
 
 });
